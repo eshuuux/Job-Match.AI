@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.pyproj
+
+# Environment
+env/
+venv/
+ENV/
+.venv/
+
+# SQLite database
+*.db
+*.sqlite3
+
+# VSCode settings
+.vscode/
+
+# PyCharm
+.idea/
+
+# Flask specific
+instance/
+*.log
+
+# Cache
+*.cache
+*.egg-info/
+dist/
+build/
+
+# System files
+.DS_Store
+Thumbs.db

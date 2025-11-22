@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Job Match.AI - Job Recommendation System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">Job Match.AI</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="/jobs" class="nav-link">Browse Jobs</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h1 class="fw-bold display-5">Find Jobs That Match Your Skills</h1>
+    <p class="lead mt-3">Upload your resume and get job recommendations based on your skills.</p>
+    <a href="/upload" class="btn btn-primary btn-lg mt-3">Upload Resume</a>
+  </div>
+</section>
+
+<!-- LATEST JOBS -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="mb-4 fw-bold">Latest Jobs</h2>
+    <div class="row">
+
+      {% if jobs %}
+     {% for job in jobs %}
+<div class="col-md-4">
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">{{ job[1] }}</h5>  <!-- Job Title -->
+      <h6 class="card-subtitle mb-2 text-muted">{{ job[2] }}</h6> <!-- Company -->
+      <p><strong>Location:</strong> {{ job[3] }}</p> <!-- Location -->
+      <a href="/job/{{ job[0] }}" class="btn btn-primary btn-sm">View Details</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+      {% else %}
+        <p>No jobs added yet.</p>
+      {% endif %}
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-3 bg-dark text-center text-light">
+    <small>© 2025 JobMatchAI — All Rights Reserved. A Professional Job Recommendation Platform.</small>
+</footer>
+
+</body>
+</html>
