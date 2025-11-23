@@ -80,7 +80,7 @@
         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="/jobs">Browse Jobs</a></li>
         <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
-        <li class="nav-item"><a class="nav-link active fw-bold" href="/contact">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
       </ul>
     </div>
   </div>
@@ -126,22 +126,22 @@
   <div class="contact-card">
     <h3 class="fw-bold mb-3">Send Us a Message</h3>
 
-    <form>
+    <form action="/supportform" method="POST">
       <div class="row">
         <div class="col-md-6 mb-3">
           <label class="fw-semibold">Full Name</label>
-          <input type="text" class="form-control" placeholder="Enter your name">
+          <input type="text" class="form-control" placeholder="Enter your name" name="name">
         </div>
 
         <div class="col-md-6 mb-3">
           <label class="fw-semibold">Email</label>
-          <input type="email" class="form-control" placeholder="Enter your email">
+          <input type="email" class="form-control" placeholder="Enter your email" name="email">
         </div>
       </div>
 
       <div class="mb-3">
         <label class="fw-semibold">Message</label>
-        <textarea class="form-control" rows="5" placeholder="Write your message..."></textarea>
+        <textarea class="form-control" rows="5" placeholder="Write your message..." name="message"></textarea>
       </div>
 
       <button type="submit" class="btn-send">Send Message</button>
