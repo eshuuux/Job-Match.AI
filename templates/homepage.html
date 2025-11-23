@@ -1,65 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Job Match.AI - Job Recommendation System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatchAI - Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CUSTOM STYLES -->
+   <style>
+    body { padding-top: 60px; }
+
+    html {
+        scroll-padding-top: 20px; /* space when auto-scrolling to sections */
+    }
+
+    #upload-section {
+        margin-top: 40px;  /* extra manual spacing */
+    }
+
+    .btn-hover { transition: transform 0.35s ease; }
+    .btn-hover:hover { transform: scale(1.08); }
+
+    .latest-job-card {
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+    .latest-job-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+    }
+
+    .category-card {
+        padding: 20px;
+        border-radius: 10px;
+        background: white;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+    .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+    }
+</style>
+
 </head>
 <body>
 
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="/">Job Match.AI</a>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
-        <li class="nav-item"><a href="/jobs" class="nav-link">Browse Jobs</a></li>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+
+    <a class="navbar-brand fw-bold" href="/">JobMatchAI</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/jobs">Browse Jobs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+        <li class="nav-item ms-3">
+          <a href="/login" class="btn btn-outline-info btn-sm btn-hover">Login</a>
+        </li>
+        <li class="nav-item ms-2">
+          <a href="/register" class="btn btn-info text-dark fw-semibold btn-sm btn-hover">Register</a>
+        </li>
       </ul>
     </div>
+
   </div>
 </nav>
 
-<!-- HERO SECTION -->
-<section class="py-5 bg-light">
-  <div class="container text-center">
-    <h1 class="fw-bold display-5">Find Jobs That Match Your Skills</h1>
-    <p class="lead mt-3">Upload your resume and get job recommendations based on your skills.</p>
-    <a href="/upload" class="btn btn-primary btn-lg mt-3">Upload Resume</a>
+
+<!-- HERO -->
+<section class="py-5 text-center bg-light">
+  <div class="container">
+    <h1 class="display-5 fw-bold">Find the Best Jobs for Your Skills</h1>
+    <p class="lead text-muted">Upload your resume and instantly get personalized job recommendations powered by AI.</p>
+    <a href="#upload-section" class="btn btn-primary btn-lg mt-2 btn-hover">Upload Resume</a>
+    <a href="/jobs" class="btn btn-outline-secondary btn-lg mt-2 ms-2 btn-hover">Browse Jobs</a>
   </div>
 </section>
 
-<!-- LATEST JOBS -->
-<section class="py-5">
-  <div class="container">
-    <h2 class="mb-4 fw-bold">Latest Jobs</h2>
-    <div class="row">
 
-      {% if jobs %}
-     {% for job in jobs %}
-<div class="col-md-4">
-  <div class="card mb-3">
-    <div class="card-body">
-      <h5 class="card-title">{{ job[1] }}</h5>  <!-- Job Title -->
-      <h6 class="card-subtitle mb-2 text-muted">{{ job[2] }}</h6> <!-- Company -->
-      <p><strong>Location:</strong> {{ job[3] }}</p> <!-- Location -->
-      <a href="/job/{{ job[0] }}" class="btn btn-primary btn-sm">View Details</a>
+<!-- POPULAR CATEGORIES -->
+<section class="py-5">
+  <div class="container text-center">
+    <h2 class="fw-semibold mb-4">Popular Job Categories</h2>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="category-card">Software Development 💻</div></div>
+      <div class="col-md-4"><div class="category-card">Data Science 📊</div></div>
+      <div class="col-md-4"><div class="category-card">UI/UX & Frontend 🎨</div></div>
+      <div class="col-md-4"><div class="category-card">Cloud & DevOps ☁️</div></div>
+      <div class="col-md-4"><div class="category-card">Internships 🎓</div></div>
+      <div class="col-md-4"><div class="category-card">Cybersecurity 🔐</div></div>
     </div>
   </div>
-</div>
-{% endfor %}
+</section>
 
-      {% else %}
-        <p>No jobs added yet.</p>
+<!-- WHY CHOOSE US -->
+<section class="py-5 text-center">
+  <div class="container">
+    <h2 class="fw-semibold mb-4">Why Choose JobMatchAI?</h2>
+    <div class="row">
+      <div class="col-md-4"><h6>🚀 Smart Matching</h6><p class="text-muted">AI-based recommendations for accurate results.</p></div>
+      <div class="col-md-4"><h6>💼 Real Job Listings</h6><p class="text-muted">Genuine opportunities updated regularly.</p></div>
+      <div class="col-md-4"><h6>⚡ Easy & Fast</h6><p class="text-muted">Upload resume and instantly get results.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- UPLOAD RESUME -->
+<section id="upload-section" class="py-5">
+  <div class="container">
+    <h2 class="mb-4 fw-semibold">Upload Your Resume</h2>
+    <div class="card p-4 shadow-sm">
+      <form action="/upload_resume" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Select Resume (PDF only)</label>
+          <input type="file" name="resume" class="form-control" required accept="application/pdf">
+        </div>
+        <button class="btn btn-success btn-hover">Get Recommendations</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- LATEST JOBS -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2 class="mb-4 fw-semibold">Latest Jobs</h2>
+    <div class="row">
+
+      {% for job in jobs %}
+      <div class="col-md-4">
+        <div class="card mb-3 shadow-sm latest-job-card">
+          <div class="card-body">
+            <h5 class="card-title">{{ job[1] }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ job[2] }}</h6>
+            <p><strong>Location:</strong> {{ job[3] }}</p>
+            <a href="/job/{{ job[0] }}" class="btn btn-primary btn-sm btn-hover">View Details</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+      {% if not jobs %}
+        <p>No jobs available currently.</p>
       {% endif %}
 
     </div>
   </div>
 </section>
 
+
+
+
+
+<!-- HOW IT WORKS -->
+<section class="py-5 bg-light text-center">
+  <div class="container">
+    <h2 class="fw-semibold mb-4">How It Works</h2>
+    <div class="row">
+      <div class="col-md-4"><h5>1️⃣ Upload Resume</h5><p class="text-muted">Let our AI read your skills.</p></div>
+      <div class="col-md-4"><h5>2️⃣ Smart Skill Matching</h5><p class="text-muted">We compare skills with job requirements.</p></div>
+      <div class="col-md-4"><h5>3️⃣ Best Recommendations</h5><p class="text-muted">Jobs ranked by match percentage.</p></div>
+    </div>
+  </div>
+</section>
+
+
 <!-- FOOTER -->
-<footer class="py-3 bg-dark text-center text-light">
-    <small>© 2025 JobMatchAI — All Rights Reserved. A Professional Job Recommendation Platform.</small>
+<footer class="py-3 bg-dark text-light text-center">
+  <small>© 2025 JobMatchAI — All Rights Reserved. Connecting Talent with Opportunities.</small>
 </footer>
 
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

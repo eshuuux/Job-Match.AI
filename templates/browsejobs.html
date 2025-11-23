@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Jobs - JobMatchAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    html, body { height: 100%; }
+
+    body {
+      background: linear-gradient(135deg, #f7f9fc, #eef2f7);
+      padding-top: 100px;
+    }
+
+    .filter-box {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0px 8px 25px rgba(0,0,0,0.10);
+    }
+
+    .job-card {
+      background: white;
+      border-radius: 15px;
+      padding: 26px;
+      margin-bottom: 20px;
+      box-shadow: 0px 6px 18px rgba(0,0,0,0.10);
+      transition: 0.3s ease;
+      cursor: pointer;
+    }
+
+    .job-card:hover { transform: translateY(-5px); }
+
+    /* FINAL GREEN APPLY BUTTON */
+    .btn-apply {
+      background-color: #2ecc71 !important;   /* Light green */
+      color: white !important;
+      font-weight: 600;
+      border-radius: 50px;   /* pill shape */
+      padding: 10px 35px;    /* slim pill */
+      font-size: 18px;
+      border: none;
+      display: inline-block;
+      text-align: center;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
+      transition: 0.25s ease;
+      text-decoration: none !important;  /* remove underline */
+    }
+
+    .btn-apply:hover,
+    .btn-apply:focus,
+    .btn-apply:active {
+      background-color: #27ae60 !important;
+      transform: translateY(-3px);
+      box-shadow: 0px 6px 14px rgba(0,0,0,0.22);
+      text-decoration: none !important;
+    }
+
+    hr {
+      border-top: 1.4px solid #d0d0d0;
+      margin-bottom: 15px;
+      margin-top: 10px;
+    }
+
+    footer {
+      width: 100%;
+      background: #1c1c1c;
+      color: #ffffff;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 14px;
+      margin-top: 20px;
+      border-top: 1px solid #333;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="/">JobMatchAI</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/jobs">Browse Jobs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container mt-2">
+
+  <!-- Unified Heading -->
+  <div class="row align-items-center mb-3">
+
+    <div class="col-lg-3">
+      <h2 class="fw-bold mb-1">Browse Jobs</h2>
+      <p class="text-muted" style="margin-top:-3px;">Find the best opportunities</p>
+    </div>
+
+    <div class="col-lg-9">
+      <h4 class="fw-bold mb-1">Available Jobs</h4>
+      <p class="text-muted mb-0">
+        Showing {{ jobs|length }} job opportunities matching your preferences
+      </p>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <div class="row">
+
+    <!-- FILTERS -->
+    <div class="col-lg-3 mb-4">
+      <div class="filter-box">
+        <h5 class="fw-bold mb-3">Filters</h5>
+
+        <label class="form-label fw-semibold">Keyword</label>
+        <input class="form-control mb-3" placeholder="Software Engineer">
+
+        <label class="form-label fw-semibold">Location</label>
+        <input class="form-control mb-3" placeholder="Mumbai, Pune, Remote">
+
+        <label class="form-label fw-semibold">Job Type</label>
+        <select class="form-select mb-3">
+          <option>Full Time</option>
+          <option>Part Time</option>
+          <option>Internship</option>
+          <option>Remote</option>
+        </select>
+
+        <label class="form-label fw-semibold">Salary Range</label>
+        <select class="form-select mb-3">
+          <option>0 - 3 LPA</option>
+          <option>3 - 6 LPA</option>
+          <option>6 - 10 LPA</option>
+          <option>10+ LPA</option>
+        </select>
+
+        <button class="btn btn-dark w-100 fw-semibold">Apply Filters</button>
+      </div>
+    </div>
+
+    <!-- JOB LIST -->
+    <div class="col-lg-9">
+
+      {% for job in jobs %}
+      <div class="job-card">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h4 class="fw-bold mb-1">{{ job[1] }}</h4>
+            <p class="text-muted mb-1">{{ job[2] }} • {{ job[3] }}</p>
+            <span class="badge bg-success">{{ job[4] }}</span>
+            <span class="badge bg-secondary">{{ job[5] }}</span>
+          </div>
+
+          <a href="/apply/{{ job[0] }}" class="btn-apply">Apply</a>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p class="mb-0">© 2025 JobMatchAI • All Rights Reserved</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
