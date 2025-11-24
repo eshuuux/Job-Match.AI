@@ -14,6 +14,24 @@
       padding-top: 100px;
     }
 
+    /* PROFILE PILL */
+    .profile-pill {
+      background-color: #ffc107;
+      color: #212a6d !important;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.25s ease;
+      font-size: 15px;
+    }
+    .profile-pill:hover {
+      background-color: #ffce3a;
+      transform: scale(1.05);
+      text-decoration: none !important;
+      color: #212a6d !important;
+    }
+
     .filter-box {
       background: white;
       border-radius: 15px;
@@ -33,29 +51,23 @@
 
     .job-card:hover { transform: translateY(-5px); }
 
-    /* FINAL GREEN APPLY BUTTON */
     .btn-apply {
-      background-color: #2ecc71 !important;   /* Light green */
+      background-color: #2ecc71 !important;
       color: white !important;
       font-weight: 600;
-      border-radius: 50px;   /* pill shape */
-      padding: 10px 35px;    /* slim pill */
+      border-radius: 50px;
+      padding: 10px 35px;
       font-size: 18px;
       border: none;
-      display: inline-block;
-      text-align: center;
       box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
       transition: 0.25s ease;
-      text-decoration: none !important;  /* remove underline */
+      text-decoration: none !important;
     }
 
-    .btn-apply:hover,
-    .btn-apply:focus,
-    .btn-apply:active {
+    .btn-apply:hover {
       background-color: #27ae60 !important;
       transform: translateY(-3px);
       box-shadow: 0px 6px 14px rgba(0,0,0,0.22);
-      text-decoration: none !important;
     }
 
     hr {
@@ -83,16 +95,38 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
   <div class="container-fluid">
     <a class="navbar-brand fw-bold" href="/">JobMatchAI</a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="nav">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-center">
+
         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="/jobs">Browse Jobs</a></li>
         <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
         <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+
+        {% if session.get('user_id') %}
+        <li class="nav-item dropdown ms-3">
+          <a class="nav-link dropdown-toggle profile-pill" data-bs-toggle="dropdown" role="button">
+            👤 {{ session['user_name'] }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+            <li><a class="dropdown-item text-danger fw-semibold" href="/logout">Logout</a></li>
+          </ul>
+        </li>
+        {% else %}
+        <li class="nav-item ms-3">
+          <a href="/login" class="btn btn-outline-info btn-sm btn-hover px-3">Login</a>
+        </li>
+        <li class="nav-item ms-2">
+          <a href="/register" class="btn btn-info text-dark fw-semibold btn-sm btn-hover px-3">Register</a>
+        </li>
+        {% endif %}
+
       </ul>
     </div>
   </div>
@@ -101,7 +135,6 @@
 
 <div class="container mt-2">
 
-  <!-- Unified Heading -->
   <div class="row align-items-center mb-3">
 
     <div class="col-lg-3">
@@ -119,7 +152,7 @@
   </div>
 
   <hr>
-
+<form action="/filterform" method="POST">
   <div class="row">
 
     <!-- FILTERS -->
@@ -128,34 +161,26 @@
         <h5 class="fw-bold mb-3">Filters</h5>
 
         <label class="form-label fw-semibold">Keyword</label>
-        <input class="form-control mb-3" placeholder="Software Engineer">
+        <input class="form-control mb-3" placeholder="Software Engineer" name="Keyword">
 
         <label class="form-label fw-semibold">Location</label>
-        <input class="form-control mb-3" placeholder="Mumbai, Pune, Remote">
+        <input class="form-control mb-3" placeholder="Mumbai, Pune, Remote" name="location">
 
         <label class="form-label fw-semibold">Job Type</label>
-        <select class="form-select mb-3">
+        <select class="form-select mb-3" name="select">
           <option>Full Time</option>
           <option>Part Time</option>
           <option>Internship</option>
           <option>Remote</option>
         </select>
-
-        <label class="form-label fw-semibold">Salary Range</label>
-        <select class="form-select mb-3">
-          <option>0 - 3 LPA</option>
-          <option>3 - 6 LPA</option>
-          <option>6 - 10 LPA</option>
-          <option>10+ LPA</option>
-        </select>
-
-        <button class="btn btn-dark w-100 fw-semibold">Apply Filters</button>
+        <button class="btn btn-dark w-100 fw-semibold" type="submit">Apply Filters</button>
+</form>
       </div>
     </div>
+    
 
     <!-- JOB LIST -->
     <div class="col-lg-9">
-
       {% for job in jobs %}
       <div class="job-card">
         <div class="d-flex justify-content-between align-items-center">
@@ -165,18 +190,14 @@
             <span class="badge bg-success">{{ job[4] }}</span>
             <span class="badge bg-secondary">{{ job[5] }}</span>
           </div>
-
           <a href="/apply/{{ job[0] }}" class="btn-apply">Apply</a>
         </div>
       </div>
       {% endfor %}
-
     </div>
-
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <p class="mb-0">© 2025 JobMatchAI • All Rights Reserved</p>
 </footer>

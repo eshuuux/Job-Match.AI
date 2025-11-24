@@ -12,6 +12,24 @@
       padding-top: 100px;
     }
 
+    /* PROFILE PILL BUTTON */
+    .profile-pill {
+      background-color: #ffc107;
+      color: #212a6d !important;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.25s ease;
+      font-size: 15px;
+    }
+    .profile-pill:hover {
+      background-color: #ffce3a;
+      transform: scale(1.05);
+      text-decoration: none !important;
+      color: #212a6d !important;
+    }
+
     .about-card {
       background: white;
       padding: 35px;
@@ -30,7 +48,7 @@
       justify-content: center;
       color: white;
       font-size: 30px;
-      margin-bottom: 12px;
+      margin: 0 auto 12px auto;
     }
 
     footer {
@@ -57,11 +75,32 @@
     </button>
 
     <div class="collapse navbar-collapse" id="nav">
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto align-items-center">
+
         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="/jobs">Browse Jobs</a></li>
         <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
         <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+
+        {% if session.get('user_id') %}
+        <li class="nav-item dropdown ms-3">
+          <a class="nav-link dropdown-toggle profile-pill" data-bs-toggle="dropdown" role="button">
+            👤 {{ session['user_name'] }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+            <li><a class="dropdown-item text-danger fw-semibold" href="/logout">Logout</a></li>
+          </ul>
+        </li>
+        {% else %}
+        <li class="nav-item ms-3">
+          <a href="/login" class="btn btn-outline-info btn-sm px-3">Login</a>
+        </li>
+        <li class="nav-item ms-2">
+          <a href="/register" class="btn btn-info text-dark fw-semibold btn-sm px-3">Register</a>
+        </li>
+        {% endif %}
+
       </ul>
     </div>
   </div>
