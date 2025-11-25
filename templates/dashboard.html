@@ -141,7 +141,12 @@
         <p><strong>Skills:</strong> {{ session.get('skills', 'Not provided') }}</p>
 
         <p><strong>Resume:&nbsp;</strong>
-          <a href="/{{ session['resume'] }}" target="_blank" class="resume-pill">View Resume</a>
+          <a href="{{ url_for('static', filename='resumes/' + session['resume']) }}" 
+   target="_blank" 
+   class="resume-pill">
+   View Resume
+</a>
+
         </p>
       </div>
     </div>
