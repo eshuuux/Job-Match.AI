@@ -82,8 +82,10 @@
       <div class="col-md-4">
         <input type="text" name="location" placeholder="Location" class="form-control mb-2" required>
       </div>
+      <div class="col-md-4">
+        <input type="text" name="skills" placeholder="Skills" class="form-control mb-2" required>
+      </div>
     </div>
-
     <textarea name="description" placeholder="Job Description" class="form-control mb-2"></textarea>
     <button class="btn btn-primary">Add Job</button>
   </form>
@@ -129,7 +131,8 @@
                 <input type="text" name="title" class="form-control mb-2" value="{{ job[1] }}" required>
                 <input type="text" name="company" class="form-control mb-2" value="{{ job[2] }}" required>
                 <input type="text" name="location" class="form-control mb-2" value="{{ job[3] }}" required>
-                <textarea name="description" class="form-control mb-2">{{ job[4] }}</textarea>
+                <input type="text" name="skills" class="form-control mb-2" value="{{ job[4] }}" required>
+                <textarea name="description" class="form-control mb-2">{{ job[5] }}</textarea>
               </div>
 
               <div class="modal-footer">

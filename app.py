@@ -1,9 +1,10 @@
 from flask import *
 import os
 import sqlite3 as sql
+from pdf_parser import parse_resume
 
 app = Flask(__name__)
-app.secret_key = "super-secret-key-change-later"  # required for sessions + flash
+app.secret_key = "qwertyuiop"
 
 # ---------------- DB CONNECTION ----------------
 def get_connection():
@@ -41,7 +42,39 @@ def change_password():
 
     return render_template("change_password.html")
 
+@app.route("/upload_resume", methods=["POST"])
+def upload_resume():
+    resume = request.files["resume"]
 
+    # Save file
+    filename = resume.filename
+    path = os.path.join("static/resumes", filename)
+    resume.save(path)
+
+    # Parse skills
+    skills = parse_resume(path)
+
+    if not skills:
+        flash("No skills found in resume.", "warning")
+        return redirect("/")
+
+    # Fetch all jobs
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM jobs")
+    jobs = cur.fetchall()
+    conn.close()
+
+    # Filter jobs in Python (much simpler than SQL)
+    matched_jobs = []
+    for job in jobs:
+        text = (job["title"] + " " + job["skills_required"]).lower()
+
+        for skill in skills:
+            if skill.lower() in text:
+                matched_jobs.append(job)
+                break
+    return render_template("browsejobs.html", jobs=matched_jobs, matched=True)
 
 @app.route('/about')
 def about():
@@ -97,6 +130,9 @@ def supportform():
 
 @app.route('/apply/<int:job_id>')
 def apply_job(job_id):
+    if "user_id" not in session:
+        flash("Please login to apply for a job.", "warning")
+        return redirect(url_for("login"))
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM jobs WHERE id = ?", (job_id,))
@@ -122,7 +158,6 @@ def admin_applications():
     conn.close()
     return render_template("admin_applications.html", apps=apps)
 
-
 @app.route("/admin/applications/delete/<int:id>")
 def delete_application(id):
     conn = get_connection()
@@ -132,7 +167,6 @@ def delete_application(id):
     conn.close()
     flash("Application removed successfully!", "danger")
     return redirect(url_for("admin_applications"))
-
 
 # ---------------- MANAGE JOBS ----------------
 @app.route('/admin/jobs')
@@ -149,12 +183,13 @@ def add_job():
     title = request.form['title']
     company = request.form['company']
     location = request.form['location']
+    skills = request.form['skills']
     description = request.form['description']
 
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("INSERT INTO jobs (title, company, location, description) VALUES (?,?,?,?)",
-                (title, company, location, description))
+    cur.execute("INSERT INTO jobs (title, company, location, skills_required , description) VALUES (?,?,?,?,?)",
+                (title, company, location,skills, description))
     conn.commit()
     conn.close()
 
@@ -166,12 +201,13 @@ def edit_job(id):
     title = request.form['title']
     company = request.form['company']
     location = request.form['location']
-    description = request.form['description']
+    skills = request.form['skills']
+    description=request.form['description']
 
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("UPDATE jobs SET title=?, company=?, location=?, description=? WHERE id=?",
-                (title, company, location, description, id))
+    cur.execute("UPDATE jobs SET title=?, company=?, location=?, skills_required=?, description=? WHERE id=?",
+                (title, company, location, skills,description, id))
     conn.commit()
     conn.close()
     flash("Job updated successfully!", "info")
@@ -210,8 +246,8 @@ def edit_user(id):
     conn.commit()
     conn.close()
     flash("User updated successfully!", "info")
-    return redirect(url_for('admin_users'))
-
+    return redirect(url_for('admin_users'))                                                                                                                                                                                                                                                                          
+                                                                                                                                                                                                                                                                                                      
 @app.route('/admin/users/delete/<int:id>')
 def delete_user(id):
     conn = get_connection()
@@ -222,10 +258,13 @@ def delete_user(id):
     flash("User deleted successfully!", "danger")
     return redirect(url_for('admin_users'))
 
-
 # ---------------- SUBMIT APPLICATION ----------------
 @app.route('/submit_application/<int:job_id>', methods=['POST'])
 def submit_application(job_id):
+    if "user_id" not in session:
+        flash("Please login before applying.", "warning")
+        return redirect(url_for("login"))
+
     name = request.form.get('name')
     email = request.form.get('email')
     resume = request.files['resume']
@@ -243,7 +282,6 @@ def submit_application(job_id):
 
     flash("Application submitted successfully!", "success")
     return redirect("/dashboard")
-
 
 # ---------------- REGISTER ----------------
 @app.route("/registerform", methods=["POST"])
@@ -322,7 +360,6 @@ def dashboard():
     applications = cur.fetchall()
     con.close()
     return render_template("dashboard.html", applications=applications)
-
 
 # ---------------- MAIN ----------------
 if __name__ == "__main__":
