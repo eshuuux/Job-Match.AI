@@ -36,7 +36,6 @@ def change_password():
         cur.execute("UPDATE users SET password = ? WHERE id = ?", (new_password, session["user_id"]))
         conn.commit()
         conn.close()
-
         flash("Password changed successfully!", "success")
         return redirect(url_for("dashboard"))
 
@@ -288,7 +287,7 @@ def submit_application(job_id):
 def registerform():
     name = request.form["name"]
     email = request.form["email"]
-    password = request.form["password"]   # simple
+    password = request.form["password"]   #simple
     skills = request.form["skills"]
     resume_file = request.files["resume"]
 
